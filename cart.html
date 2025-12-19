@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Cart — Anon E-commerce</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+
+<body>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="cart-page">
+        <h1>Your Cart</h1>
+
+        <div class="cart-grid">
+            <section class="cart-items" aria-labelledby="cart-items-heading">
+                <h2 id="cart-items-heading">Items</h2>
+                <div data-cart-items>
+                    <!-- Items injected here by assets/js/script.js -->
+                </div>
+            </section>
+
+            <aside class="cart-summary" aria-labelledby="cart-summary-heading">
+                <h2 id="cart-summary-heading">Summary</h2>
+                <p>Total: <strong data-cart-total>₹0.00</strong></p>
+                <div class="cart-actions">
+                    <button class="btn secondary" data-clear-cart>Clear Cart</button>
+                    <a href="shop.html" class="btn">Continue Shopping</a>
+                    <a href="#" class="btn">Checkout</a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="assets/js/load-navbar.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>

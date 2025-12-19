@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop - Anon eCommerce</title>
+
+  <link rel="shortcut icon" href="./assets/images/logo/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="style-prefix.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* Shop Page Specific Styles */
+    .shop-container {
+      display: flex;
+      gap: 30px;
+      margin: 30px 0;
+    }
+
+    .shop-sidebar {
+      width: 250px;
+      padding: 20px;
+      background: #f5f5f5;
+      border-radius: 10px;
+    }
+
+    .filter-section {
+      margin-bottom: 25px;
+    }
+
+    .filter-section h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #222;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .filter-option input {
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .filter-option label {
+      cursor: pointer;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .price-filter {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .price-filter input {
+      width: 70px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .shop-main {
+      flex: 1;
+    }
+
+    .shop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .shop-header h1 {
+      font-size: 32px;
+      color: #222;
+    }
+
+    .sort-container {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .sort-container label {
+      font-weight: 500;
+      color: #666;
+    }
+
+    .sort-container select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      background: white;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .product-card:hover {
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transform: translateY(-5px);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      background: #f0f0f0;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-category {
+      font-size: 12px;
+      color: #ff6b6b;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .product-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 8px;
+      line-height: 1.4;
+      min-height: 35px;
+    }
+
+    .product-rating {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 10px;
+      color: #ffd700;
+    }
+
+    .product-rating ion-icon {
+      font-size: 14px;
+    }
+
+    .product-price {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .price-current {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ff6b6b;
+    }
+
+    .price-original {
+      font-size: 14px;
+      color: #999;
+      text-decoration: line-through;
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 10px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 14px;
+    }
+
+    .add-to-cart-btn:hover {
+      background: #ff5252;
+    }
+
+    .no-products {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+      font-size: 18px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+
+    @media (max-width: 768px) {
+      .shop-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .shop-sidebar {
+        width: 100%;
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+      }
+
+      .shop-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
+
+      .sort-container {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .sort-container select {
+        width: 100%;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="overlay" data-overlay></div>
+
+  <!-- SHOPPING CART SIDEBAR -->
+  
+  <!-- HEADER (loaded from navbar.html) -->
+  <div id="navbar-placeholder"></div>
+  
+  <!-- Original header removed - using navbar.html instead -->
+  <header>
+    <div class="header-top">
+      <div class="container">
+        <ul class="header-social-container">
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-linkedin"></ion-icon>
+            </a>
+          </li>
+        </ul>
+
+        <div class="header-alert-news">
+          <p><b>Free Shipping</b> This Week Order Over - $55</p>
+        </div>
+
+        <div class="header-top-actions">
+          <select name="currency">
+            <option value="usd">USD &dollar;</option>
+            <option value="eur">EUR &euro;</option>
+          </select>
+
+          <select name="language">
+            <option value="en-US">English</option>
+            <option value="es-ES">Espa&ntilde;ol</option>
+            <option value="fr">Fran&ccedil;ais</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-main">
+      <div class="container">
+        <a href="./index.html" class="header-logo">
+          <img src="./assets/images/logo/logo.svg" alt="Anon's logo" width="120" height="36">
+        </a>
+
+        <div class="header-search-container">
+          <input type="search" name="search" class="search-field" placeholder="Enter product name...">
+          <button class="search-btn">
+            <ion-icon name="search-outline"></ion-icon>
+          </button>
+        </div>
+
+        <div class="header-user-actions">
+          <button class="action-btn">
+            <ion-icon name="person-outline"></ion-icon>
+          </button>
+
+          <button class="action-btn">
+            <ion-icon name="heart-outline"></ion-icon>
+            <span class="count">0</span>
+          </button>
+
+          <a href="cart.html" class="action-btn">
+            <ion-icon name="bag-handle-outline"></ion-icon>
+            <span class="count" data-cart-count>0</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="desktop-navigation-menu">
+
+      <div class="container">
+
+        <ul class="desktop-menu-category-list">
+
+          <li class="menu-category">
+            <a href="./index.html" class="menu-title">Home</a>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Categories</a>
+
+            <div class="dropdown-panel">
+
+              <ul class="dropdown-panel-list">
+
+                <li class="menu-title">
+                  <a href="#">Electronics</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Desktop</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Laptop</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Camera</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Tablet</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Headphone</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">
+                    <img src="./assets/images/electronics-banner-1.jpg" alt="headphone collection" width="250"
+                      height="119">
+                  </a>
+                </li>
+
+              </ul>
+
+              <ul class="dropdown-panel-list">
+
+                <li class="menu-title">
+                  <a href="#">Men's</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Formal</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Casual</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Sports</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Jacket</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Sunglasses</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">
+                    <img src="./assets/images/mens-banner.jpg" alt="men's fashion" width="250" height="119">
+                  </a>
+                </li>
+
+              </ul>
+
+              <ul class="dropdown-panel-list">
+
+                <li class="menu-title">
+                  <a href="#">Women's</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Formal</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Casual</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Perfume</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Cosmetics</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Bags</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">
+                    <img src="./assets/images/womens-banner.jpg" alt="women's fashion" width="250" height="119">
+                  </a>
+                </li>
+
+              </ul>
+
+              <ul class="dropdown-panel-list">
+
+                <li class="menu-title">
+                  <a href="#">Electronics</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Smart Watch</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Smart TV</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Keyboard</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Mouse</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">Microphone</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">
+                    <img src="./assets/images/electronics-banner-2.jpg" alt="mouse collection" width="250" height="119">
+                  </a>
+                </li>
+
+              </ul>
+
+            </div>
+          </li>
+
+          <li class="menu-category">
+            <a href="./shop.html" class="menu-title">Shop</a>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Men's</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="#">Shirt</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Shorts & Jeans</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Safety Shoes</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Wallet</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Women's</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="#">Dress & Frock</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Earrings</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Necklace</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Makeup Kit</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Jewelry</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="#">Earrings</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Couple Rings</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Necklace</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Bracelets</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Perfume</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="#">Clothes Perfume</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Deodorant</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Flower Fragrance</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Air Freshener</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Blog</a>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Hot Offers</a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </nav>
+  </header>
+
+  <!-- MAIN SHOP CONTENT -->
+  <main>
+    <div class="container">
+      <div class="shop-container">
+        <!-- SIDEBAR FILTERS -->
+        <div class="shop-sidebar">
+          <div class="filter-section">
+            <h3>Categories</h3>
+            <div class="filter-option">
+              <input type="checkbox" id="cat-all" value="all" checked>
+              <label for="cat-all">All Products</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="cat-shirt" value="shirt">
+              <label for="cat-shirt">Shirts & Tops</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="cat-jacket" value="jacket">
+              <label for="cat-jacket">Jackets</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="cat-shoes" value="shoes">
+              <label for="cat-shoes">Shoes</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="cat-watch" value="watch">
+              <label for="cat-watch">Watches</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="cat-cosmetic" value="cosmetic">
+              <label for="cat-cosmetic">Cosmetics</label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h3>Price Range</h3>
+            <div class="price-filter">
+              <input type="number" id="price-min" placeholder="Min" min="0" value="0">
+              <span>-</span>
+              <input type="number" id="price-max" placeholder="Max" min="0" value="1000">
+            </div>
+            <button style="width: 100%; padding: 8px; margin-top: 10px; background: #ff6b6b; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Apply Filter</button>
+          </div>
+
+          <div class="filter-section">
+            <h3>Rating</h3>
+            <div class="filter-option">
+              <input type="checkbox" id="rating-5">
+              <label for="rating-5">⭐⭐⭐⭐⭐ 5 Star</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="rating-4">
+              <label for="rating-4">⭐⭐⭐⭐ 4+ Star</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="rating-3">
+              <label for="rating-3">⭐⭐⭐ 3+ Star</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAIN PRODUCT SECTION -->
+        <div class="shop-main">
+          <div class="shop-header">
+            <h1>All Products</h1>
+            <div class="sort-container">
+              <label for="sort-by">Sort by:</label>
+              <select id="sort-by">
+                <option value="newest">Newest</option>
+                <option value="popular">Most Popular</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="product-grid" id="productGrid">
+            <div class="loading">Loading products...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-bottom">
+      <div class="container">
+        <img src="./assets/images/payment.png" alt="payment method" class="payment-img">
+        <p class="copyright">
+          Copyright &copy; <a href="#">Anon</a> all rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="load-navbar.js"></script>
+  <script src="shop.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>
